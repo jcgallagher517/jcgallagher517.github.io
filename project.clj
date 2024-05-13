@@ -78,6 +78,8 @@
    :server-port 3449
    :nrepl-port 7002
    :nrepl-middleware [cider.piggieback/wrap-cljs-repl
+                      cider.nrepl/cider-middleware
+                      refactor-nrepl.middleware/wrap-refactor
                       ]
    :css-dirs ["resources/public/css"]
    :ring-handler jcgallagher517.handler/app}
@@ -99,6 +101,11 @@
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.20"]
+                             [cider/cider-nrepl "0.21.1"]
+                             [org.clojure/tools.namespace "0.3.0-alpha4"
+                              :exclusions [org.clojure/tools.reader]]
+                             [refactor-nrepl "2.4.0"
+                              :exclusions [org.clojure/clojure]]
 ]
 
                    :injections [(require 'pjstadig.humane-test-output)
