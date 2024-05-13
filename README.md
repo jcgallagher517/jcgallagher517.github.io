@@ -1,6 +1,6 @@
-# myproject
+# jcgallagher517
 
-This is the myproject project.
+This is the jcgallagher517 project.
 
 ## Development mode
 

@@ -1,4 +1,4 @@
-(ns myproject.util)
+(ns jcgallagher517.util)
 
 (defn foo-cljc [x]
   "I don't do a whole lot."

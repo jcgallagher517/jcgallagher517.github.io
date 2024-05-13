@@ -1,13 +1,13 @@
-(ns myproject.handler
+(ns jcgallagher517.handler
   (:require
    [reitit.ring :as reitit-ring]
-   [myproject.middleware :refer [middleware]]
+   [jcgallagher517.middleware :refer [middleware]]
    [hiccup.page :refer [include-js include-css html5]]
    [config.core :refer [env]]))
 
 (def mount-target
   [:div#app
-   [:h2 "Welcome to myproject"]
+   [:h2 "Welcome to jcgallagher517"]
    [:p "please wait while Figwheel/shadow-cljs is waking up ..."]
    [:p "(Check the js console for hints if nothing exciting happens.)"]])
 

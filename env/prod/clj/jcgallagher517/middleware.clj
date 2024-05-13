@@ -1,4 +1,4 @@
-(ns myproject.middleware
+(ns jcgallagher517.middleware
   (:require
    [ring.middleware.defaults :refer [site-defaults wrap-defaults]]))
 

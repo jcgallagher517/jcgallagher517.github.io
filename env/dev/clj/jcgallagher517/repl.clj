@@ -1,5 +1,5 @@
-(ns myproject.repl
-  (:use myproject.handler
+(ns jcgallagher517.repl
+  (:use jcgallagher517.handler
         figwheel-sidecar.repl-api
         ring.server.standalone
         [ring.middleware file-info file]))

@@ -1,4 +1,4 @@
-(defproject myproject "0.1.0-SNAPSHOT"
+(defproject jcgallagher517 "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -28,12 +28,12 @@
             [lein-asset-minifier "0.4.6"
              :exclusions [org.clojure/clojure]]]
 
-  :ring {:handler myproject.handler/app
-         :uberwar-name "myproject.war"}
+  :ring {:handler jcgallagher517.handler/app
+         :uberwar-name "jcgallagher517.war"}
 
   :min-lein-version "2.5.0"
-  :uberjar-name "myproject.jar"
-  :main myproject.server
+  :uberjar-name "jcgallagher517.jar"
+  :main jcgallagher517.server
   :clean-targets ^{:protect false}
   [:target-path
    [:cljsbuild :builds :app :compiler :output-dir]
@@ -58,9 +58,9 @@
               :pretty-print  false}}
             :app
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
-             :figwheel {:on-jsload "myproject.core/mount-root"}
+             :figwheel {:on-jsload "jcgallagher517.core/mount-root"}
              :compiler
-             {:main "myproject.dev"
+             {:main "jcgallagher517.dev"
               :asset-path "/js/out"
               :output-to "target/cljsbuild/public/js/app.js"
               :output-dir "target/cljsbuild/public/js/out"
@@ -80,11 +80,11 @@
    :nrepl-middleware [cider.piggieback/wrap-cljs-repl
                       ]
    :css-dirs ["resources/public/css"]
-   :ring-handler myproject.handler/app}
+   :ring-handler jcgallagher517.handler/app}
 
 
 
-  :profiles {:dev {:repl-options {:init-ns myproject.repl}
+  :profiles {:dev {:repl-options {:init-ns jcgallagher517.repl}
                    :dependencies [[cider/piggieback "0.5.3"]
                                   [binaryage/devtools "1.0.6"]
                                   [ring/ring-mock "0.4.0"]

@@ -1,6 +1,6 @@
-(ns ^:figwheel-no-load myproject.dev
+(ns ^:figwheel-no-load jcgallagher517.dev
   (:require
-    [myproject.core :as core]
+    [jcgallagher517.core :as core]
     [devtools.core :as devtools]))
 
 (extend-protocol IPrintWithWriter
