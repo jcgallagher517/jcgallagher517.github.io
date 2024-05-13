@@ -94,7 +94,6 @@
                                   [prone "2021-04-23"]
                                   [figwheel-sidecar "0.5.20"]
                                   [nrepl "0.9.0"]
-                                  [thheller/shadow-cljs "2.16.7"]
                                   [pjstadig/humane-test-output "0.11.0"]
                                   
  ]
@@ -113,7 +112,6 @@
 
                    :env {:dev true}}
 
-             :shadow-cljs {:dependencies [[com.google.javascript/closure-compiler-unshaded "v20211201"]]}
 
              :uberjar {:hooks [minify-assets.plugin/hooks]
                        :source-paths ["env/prod/clj"]

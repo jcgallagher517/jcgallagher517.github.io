@@ -8,7 +8,7 @@
 (def mount-target
   [:div#app
    [:h2 "Welcome to jcgallagher517"]
-   [:p "please wait while Figwheel/shadow-cljs is waking up ..."]
+   [:p "please wait while Figwheel is waking up ..."]
    [:p "(Check the js console for hints if nothing exciting happens.)"]])
 
 (defn head []

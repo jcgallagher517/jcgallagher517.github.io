@@ -111,5 +111,3 @@
   (accountant/dispatch-current!)
   (mount-root))
 
-(defn ^:dev/after-load reload! []
-  (mount-root))
