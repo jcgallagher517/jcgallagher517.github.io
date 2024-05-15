@@ -8,8 +8,8 @@
   (-pr-writer [sym writer _]
     (-write writer (str "\"" (.toString sym) "\""))))
 
-(enable-console-print!)
-
 (devtools/install!)
+
+(enable-console-print!)
 
 (core/init!)
