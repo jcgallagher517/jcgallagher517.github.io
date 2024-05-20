@@ -7,6 +7,7 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/clojurescript "1.11.60"]
                  [reagent "1.1.1"]
+                 [metosin/reitit "0.7.0"]
                  [cljsjs/react "17.0.2-0"]
                  [cljsjs/react-dom "17.0.2-0"]]
 
