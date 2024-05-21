@@ -1,134 +1,66 @@
 (ns jcgallagher517.core
-  (:require [clojure.string :as string]
-            [fipp.edn :as fedn]
-            [reagent.core :as r]
-            [reagent.dom :as rd]
-            [reitit.coercion.spec :as rss]
-            [reitit.frontend :as rf]
-            [reitit.frontend.easy :as rfe]
-            [spec-tools.data-spec :as ds]))
+    (:require
+      [reagent.core :as r]
+      [reagent.dom :as rd]
+      [reitit.frontend :as rf]
+      [reitit.frontend.easy :as rfe]
+      [reitit.coercion.spec :as rss]
+      [spec-tools.data-spec :as ds]))
 
-;; Components similar to react-router `Link`, `NavLink` and `Redirect`
-;; with Reitit frontend.
+;; -------------------------
+;; Pages
 
 (defn home-page []
   [:div
-   [:h2 "Welcome to frontend"]
+   [:h2 "Welcome to Reagent"]
    [:p "This is home page"]])
 
 (defn about-page []
   [:div
-   [:h2 "About frontend"]
+   [:h2 "About me"]
    [:p "This is about page"]])
 
-(defn redirect!
-  "If `push` is truthy, previous page will be left in history."
-  [{:keys [to path-params query-params push]}]
-  (if push
-    (rfe/push-state to path-params query-params)
-    (rfe/replace-state to path-params query-params)))
+(defn physics-page []
+  [:div
+   [:h2 "Physics"]
+   [:p "This is the physics page"]])
 
-(defn Redirect
-  "Component that only causes a redirect side-effect."
-  [props]
-  (r/create-class
-   {:component-did-mount  (fn [this] (redirect! (r/props this)))
-    :component-did-update (fn [this [_ prev-props]]
-                            (when (not= (r/props this) prev-props)
-                              (redirect! (r/props this))))
-    :render (fn [this] nil)}))
+;; -------------------------
+;; Routes
 
-(defn item-page [match]
-  (let [{:keys [path query]} (:parameters match)
-        {:keys [id]} path]
-    (if (< id 1)
-      [Redirect {:to ::frontpage}]
-      [:div
-       [:h2 "Selected item " id]
-       (when (:foo query)
-         [:p "Optional foo query param: " (:foo query)])])))
-
-(def routes
-  [["/"
-    {:name ::frontpage
-     :view home-page}]
-
-   ["/about"
-    {:name ::about
-     :view about-page}]
-
-   ["/item/:id"
-    {:name ::item
-     :view item-page
-     :parameters
-     {:path {:id int?}
-      :query {(ds/opt :foo) keyword?}}}]])
-
-(def router
-  (rf/router routes {:data {:coercion rss/coercion}}))
-
-(defonce current-match (r/atom nil))
-
-(defn- resolve-href
-  [to path-params query-params]
-  (if (keyword? to)
-    (rfe/href to path-params query-params)
-    (let [match  (rf/match-by-path router to)
-          route  (-> match :data :name)
-          params (or path-params (:path-params match))
-          query  (or query-params (:query-params match))]
-      (if match
-        (rfe/href route params query)
-        to))))
-
-(defn Link
-  [{:keys [to path-params query-params active]} & children]
-  (let [href (resolve-href to path-params query-params)]
-    (into
-     [:a {:href href} (when active "> ")] ;; Apply styles or whatever
-     children)))
-
-(defn- name-matches?
-  [name path-params match]
-  (and (= name (-> match :data :name))
-       (= (not-empty path-params)
-          (-> match :parameters :path not-empty))))
-
-(defn- url-matches?
-  [url match]
-  (= (-> url (string/split #"\?") first)
-     (:path match)))
-
-(defn NavLink
-  [{:keys [to path-params] :as props} & children]
-  (let [active (or (name-matches? to path-params @current-match)
-                   (url-matches? to @current-match))]
-    [Link (assoc props :active active) children]))
+(defonce match (r/atom nil))
 
 (defn current-page []
   [:div
+   [:header
+    [:h2
+     [:nav
+      [:div
+       [:button {:type "button" :on-click #(rfe/push-state ::home)} "Home"]
+       [:button {:type "button" :on-click #(rfe/push-state ::physics)} "Physics"]
+       [:button {:type "button" :on-click #(rfe/push-state ::about)} "About"]]]]]
+   (when @match
+     (let [view (:view (:data @match))]
+       [view @match]))])
 
-   [:h4 "NavLink"]
-   [:ul
-    [:li [NavLink {:to ::frontpage} "Frontpage"]]
-    [:li [NavLink {:to "/about"} "About"]]
-    [:li [NavLink {:to ::item :path-params {:id 1}} "Item 1"]]
-    [:li [NavLink {:to "/item/2?foo=bar"} "Item 2"]]
-    [:li [NavLink {:to "/item/-1"} "Item -1 (redirects to frontpage)"]]
-    [:li [NavLink {:to "http://www.google.fi"} "Google"]]]
-
-   (when @current-match
-     (let [view (:view (:data @current-match))]
-       [view @current-match]))
-
-   [:pre (with-out-str (fedn/pprint @current-match))]])
+(def routes
+  [["/"
+    {:name ::home
+     :view home-page}]
+   
+   ["/about"
+    {:name ::about
+     :view about-page}]
+   
+   ["/physics/:phys-id"
+    {:name ::physics
+     :view physics-page
+     :parameters {:path {:id int?}
+                  :query {(ds/opt :foo) keyword?}}}]])
 
 (defn init! []
   (rfe/start!
-    router
-    (fn [m] (reset! current-match m))
-    ;; set to false to enable HistoryAPI
-    {:use-fragment true})
+   (rf/router routes {:data {:coercion rss/coercion}})
+   (fn [m] (reset! match m))
+   {:use-fragment true})
   (rd/render [current-page] (.getElementById js/document "app")))
-
-(init!)
